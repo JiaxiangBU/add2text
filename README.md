@@ -27,6 +27,10 @@ library(add2text)
 ## basic example code
 ```
 
+``` r
+add_wechat_portfolio("https://mp.weixin.qq.com/s/ycWZ1Yvq3n3seAHpOj2S9g", pattern = "section")
+```
+
 -----
 
 <h4 align="center">
