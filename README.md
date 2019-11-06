@@ -5,6 +5,7 @@
 
 <!-- badges: start -->
 
+[![DOI](https://zenodo.org/badge/219925231.svg)](https://zenodo.org/badge/latestdoi/219925231)
 <!-- badges: end -->
 
 The goal of add2text is to do text summarization tasks with R.
