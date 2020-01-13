@@ -8,11 +8,11 @@ para2lines <- function(para) {
 #' @importFrom clipr read_clip write_clip
 #' @importFrom xml2 read_html
 #' @importFrom rvest html_nodes html_text
-#' @importFrom stringr str_trim str_length str_sub
+#' @importFrom stringr str_trim str_length str_sub str_squish
 extract_p <-
     function(url = NULL,
              content_path = NULL,
-             pattern = "p") {
+             pattern = "p , section span") {
         if (is.null(url)) {
             url <- clipr::read_clip()
         }
@@ -41,12 +41,12 @@ extract_p <-
 #' @importFrom clipr write_clip
 #' @export
 add_wechat_portfolio <-
-    function(path, ...) {
+    function(path, pattern = "p , section span") {
         bibtex_text <- add2bibtex::add_wechat(path)
-        firstline_text <- add2md::extract_firstline(path)
-        highlight_text <- add2md::extract_highlight(path)
+        firstline_text <- add2md::extract_firstline(path, pattern = pattern) %>% stringr::str_trim() %>% stringr::str_squish()
+        highlight_text <- add2md::extract_highlight(path, pattern = pattern) %>% stringr::str_trim() %>% stringr::str_squish()
 
-        text <- extract_p(path, ...) %>%
+        text <- extract_p(path, pattern = pattern) %>%
             stringr::str_flatten("\n") %>%
             stringr::str_remove_all("<U\\+00A0>")
 
@@ -55,6 +55,7 @@ add_wechat_portfolio <-
         # https://blog.rstudio.com/2018/03/26/reticulate-r-interface-to-python/
 
         snownlp_text <- snownlp$SnowNLP(text %>% stringr::str_flatten("\n"))$summary() %>%
+            stringr::str_trim() %>%
             stringr::str_flatten("\n")
 
         if (length(highlight_text) > 0 & length(firstline_text) > 0) {
@@ -71,11 +72,11 @@ add_wechat_portfolio <-
             add2bibtex::get_wechat_title()
         if (length(firstline_text) == 0) {
             firstline_text = ""
-            usethis::ui_warn("firstline_text is empty.")
+            usethis::ui_warn("\n\nfirstline_text is empty.")
         }
         if (length(highlight_text) == 0) {
             highlight_text = ""
-            usethis::ui_warn("highlight_text is empty.")
+            usethis::ui_warn("\n\nhighlight_text is empty.")
         }
         output <-
             glue::glue(

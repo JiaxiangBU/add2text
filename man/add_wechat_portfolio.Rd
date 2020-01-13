@@ -4,7 +4,7 @@
 \alias{add_wechat_portfolio}
 \title{Extract relavant contents from a WeChat article with BibTex.}
 \usage{
-add_wechat_portfolio(path, ...)
+add_wechat_portfolio(path, pattern = "p , section span")
 }
 \description{
 Extract relavant contents from a WeChat article with BibTex.
