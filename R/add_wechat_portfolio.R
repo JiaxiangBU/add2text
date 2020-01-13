@@ -41,7 +41,7 @@ extract_p <-
 #' @importFrom clipr write_clip
 #' @export
 add_wechat_portfolio <-
-    function(path, pattern = "p , section span") {
+    function(path, pattern = "p , section span", limit = 20L) {
         bibtex_text <- add2bibtex::add_wechat(path)
         firstline_text <- add2md::extract_firstline(path, pattern = pattern) %>% stringr::str_trim() %>% stringr::str_squish()
         highlight_text <- add2md::extract_highlight(path, pattern = pattern) %>% stringr::str_trim() %>% stringr::str_squish()
@@ -54,7 +54,7 @@ add_wechat_portfolio <-
         snownlp <- reticulate::import("snownlp")
         # https://blog.rstudio.com/2018/03/26/reticulate-r-interface-to-python/
 
-        snownlp_text <- snownlp$SnowNLP(text %>% stringr::str_flatten("\n"))$summary() %>%
+        snownlp_text <- snownlp$SnowNLP(text %>% stringr::str_flatten("\n"))$summary(limit = limit) %>%
             stringr::str_trim() %>%
             stringr::str_flatten("\n")
 
